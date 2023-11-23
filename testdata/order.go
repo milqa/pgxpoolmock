@@ -3,7 +3,7 @@ package testdata
 import (
 	"context"
 
-	"github.com/chrisyxlee/pgxpoolmock"
+	"github.com/milqa/pgxpoolmock"
 )
 
 type Order struct {

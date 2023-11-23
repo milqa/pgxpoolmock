@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/chrisyxlee/pgxpoolmock"
-	"github.com/chrisyxlee/pgxpoolmock/sqlc"
-	"github.com/chrisyxlee/pgxpoolmock/testdata"
 	"github.com/golang/mock/gomock"
 	"github.com/jackc/pgx/v5"
+	"github.com/milqa/pgxpoolmock"
+	"github.com/milqa/pgxpoolmock/sqlc"
+	"github.com/milqa/pgxpoolmock/testdata"
 	"github.com/stretchr/testify/assert"
 )
 
