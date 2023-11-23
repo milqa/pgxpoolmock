@@ -9,7 +9,7 @@ import (
 	"github.com/chrisyxlee/pgxpoolmock/sqlc"
 	"github.com/chrisyxlee/pgxpoolmock/testdata"
 	"github.com/golang/mock/gomock"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
 	"github.com/stretchr/testify/assert"
 )
 

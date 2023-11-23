@@ -3,8 +3,8 @@ package pgxpoolmock
 import (
 	"fmt"
 
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 var (
@@ -19,6 +19,5 @@ type BatchResults interface {
 	Exec() (pgconn.CommandTag, error)
 	Query() (pgx.Rows, error)
 	QueryRow() pgx.Row
-	QueryFunc(scans []interface{}, f func(pgx.QueryFuncRow) error) (pgconn.CommandTag, error)
 	Close() error
 }

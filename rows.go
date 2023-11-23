@@ -7,9 +7,8 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/jackc/pgconn"
-	"github.com/jackc/pgproto3/v2"
-	"github.com/jackc/pgx/v4"
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 )
 
 // CSVColumnParser is a function which converts trimmed csv
@@ -28,16 +27,22 @@ type rowSets struct {
 	pos  int
 }
 
+func (rs *rowSets) Conn() *pgx.Conn {
+	r := rs.sets[rs.pos]
+
+	return r.ToPgxRows().Conn()
+}
+
 func (rs *rowSets) Err() error {
 	r := rs.sets[rs.pos]
 	return r.nextErr[r.pos-1]
 }
 
 func (rs *rowSets) CommandTag() pgconn.CommandTag {
-	return pgconn.CommandTag("")
+	return pgconn.NewCommandTag("")
 }
 
-func (rs *rowSets) FieldDescriptions() []pgproto3.FieldDescription {
+func (rs *rowSets) FieldDescriptions() []pgconn.FieldDescription {
 	return rs.sets[rs.pos].defs
 }
 
@@ -160,7 +165,7 @@ func rawBytes(col interface{}) (_ []byte, ok bool) {
 // Rows is a mocked collection of rows to
 // return for Query result
 type Rows struct {
-	defs     []pgproto3.FieldDescription
+	defs     []pgconn.FieldDescription
 	rows     [][]interface{}
 	pos      int
 	nextErr  map[int]error
@@ -172,9 +177,9 @@ type Rows struct {
 // to be used as sql driver.Rows.
 // Use Sqlmock.NewRows instead if using a custom converter
 func NewRows(columns []string) *Rows {
-	var coldefs []pgproto3.FieldDescription
+	var coldefs []pgconn.FieldDescription
 	for _, column := range columns {
-		coldefs = append(coldefs, pgproto3.FieldDescription{Name: []byte(column)})
+		coldefs = append(coldefs, pgconn.FieldDescription{Name: column})
 	}
 	return &Rows{
 		defs:    coldefs,
@@ -266,7 +271,7 @@ type rowSetsWithDefinition struct {
 }
 
 // NewRowsWithColumnDefinition return rows with columns metadata
-func NewRowsWithColumnDefinition(columns ...pgproto3.FieldDescription) *Rows {
+func NewRowsWithColumnDefinition(columns ...pgconn.FieldDescription) *Rows {
 	return &Rows{
 		defs:    columns,
 		nextErr: make(map[int]error),
