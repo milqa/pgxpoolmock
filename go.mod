@@ -1,4 +1,4 @@
-module github.com/chrisyxlee/pgxpoolmock
+module github.com/milqa/pgxpoolmock
 
 go 1.21
 
